@@ -1,4 +1,3 @@
-package playing;
 
 public class Sorted_LinkedList {
 	private static ListNode front;
