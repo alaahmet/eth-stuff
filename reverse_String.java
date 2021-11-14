@@ -1,4 +1,3 @@
-package playing;
 
 public class reverse_String {
 	public static String reverse(String s) {
