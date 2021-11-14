@@ -1,4 +1,3 @@
-package playing;
 
 public class LinkedList {
 	private static ListNode front;
