@@ -1,4 +1,4 @@
-public static class STNode {
+    public static class STNode {
         int leftIndex;
         int rightIndex;
         int sum = 0;
