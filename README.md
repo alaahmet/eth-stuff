@@ -1,1 +1,1 @@
-# java implementations mostly for eprog
+# java implementations for eprog and a&d
