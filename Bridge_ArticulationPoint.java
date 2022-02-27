@@ -1,6 +1,3 @@
-//https://lightoj.com/problem/critical-links
-//results in run-time-error, dunno why
-
 import java.util.*;
 class Pair implements Comparable<Pair>{
 	int x;
@@ -123,3 +120,6 @@ public class Bridge_ArticulationPoint {
 0 (1) 1
 1 (1) 0
 */
+
+//https://lightoj.com/problem/critical-links
+//results in run-time-error, dunno why
