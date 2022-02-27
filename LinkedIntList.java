@@ -1,137 +1,104 @@
 
-/**
- * A singly-linked list of integer values with fast addFirst and addLast methods
- */
 public class LinkedIntList {
-    
-    IntNode first;
-    IntNode last;
-    int size;
-    
-    /**
-     * Return the integer value at position 'index'
-     */
-    int get(int index) {
-        return getNode(index).value;
-    }
-    
-    /**
-     * Set the integer value at position 'index' to 'value'
-     */
-    void set(int index, int value) {
-        getNode(index).value = value;
-    }
-    
-    /**
-     * Returns whether the list is empty (has no values)
-     */
-    boolean isEmpty() {
-        return size == 0;
-    }
-    
-    /**
-     * Inserts 'value' at position 0 in the list.
-     */
-    void addFirst(int value) {
-        IntNode newNode = new IntNode(value);
-        newNode.next = first;
-        first = newNode;
-        if(last == null)
-            last = newNode;
-        size++;
-    }
-    
-    /**
-     * Appends 'value' at the end of the list.
-     */
-    void addLast(int value) {
-        IntNode newNode = new IntNode(value);
-        if(isEmpty())
-            first = newNode;
-        else
-            last.next = newNode;
-        
-        last = newNode;
-        size++;
-    }
-    
-    /**
-     * Removes and returns the first value of the list.
-     */
-    int removeFirst() {
-        if(isEmpty()) {
-        	Errors.error("removeFirst() on empty list!");
-        }
-        
-        int value = first.value;
-        if(first == last) {
-            // List has only one element, so just clear it
-            clear();
-        }
-        else {
-            first = first.next;
-            size--;
-        }
-        
-        return value;
-    }
+	private static IntNode front; // front has first, last, size
+	public static void addFirst(int value) {
+		if(front.size==0) {
+			front = new IntNode(0,1,new IntNode(value));
+		}
+		else {
+			IntNode temp = new IntNode(value,front.first);
+			front.first = temp;
+			front.size = front.size + 1;
+		}
+	}
+	public static int removeFirst() {
+		if(front.first == null) {
+			Errors.error("There is no first element!");
+			System.exit(-1);
+		}
+		else if(front.size==1){
+			System.out.println(front.size);
+			int first_element = front.first.value;
+			front = new IntNode(0,null,null);
+			front.size = front.size - 1;
+			return first_element;
+		}
+		else {
+			int first_element = front.first.value;
+			front.first = front.first.next;
+			front.size = front.size - 1;
+			return first_element;
+		}
+		return -1;
+	}
+	public static int removeLast() {
+		if(front.first == null) {
+			Errors.error("There is no last element!");
+			System.exit(-1);
+		}
+		else if(front.size==1){
+			int first_element = front.first.value;
+			front = new IntNode(0,null,null);
+			front.size = front.size - 1;
+			return first_element;
+		}
+		else {
+			int last_element = front.last.value;
+			IntNode current = front.first;
+			while(current.next.next != null) {
+				current = current.next;
+			}
+			front.last = current;
+			front.last.next = null;
+			front.size = front.size - 1;
+			return last_element;
+		}
+		return -1;
+	}
+	public static void clear() {
+		front = new IntNode(0,null,null);
+	}
+	public static boolean isEmpty() {
+		return front.size == 0 ? true : false;
+	}
+	public static int get(int index) {//// I assume indexing starts from 0
+		if(front.size <= index) {
+			Errors.error("There is no element at given index");
+			System.exit(-1);
+		}
+		IntNode current = front.first;
+		for(int i=0;i<index;i++) {
+			current = current.next;
+		}
+		return current.value;
+	}
+	public static void set(int index, int value) {//// I assume indexing starts from 0
+		if(front.size <= index) {
+			Errors.error("There is no element at given index");
+			System.exit(-1);
+		}
+		IntNode current = front.first;
+		for(int i=0;i<index;i++) {
+			current = current.next;
+		}
+		current.value = value;
+	}
+	public static void main(String[] args) {
+		front = new IntNode(0,null,null);// it is my LinkedIntList object and has first,last and size
+		addFirst(1);
+		addFirst(3);
+		addFirst(5);
+		addFirst(7);
+		
+		
+//		System.out.println(get(3));
+//		set(3,21);
+//		System.out.println(get(3));
+//		System.out.println(removeLast());
+//		System.out.println(front.first.value);
+//		System.out.println(removeLast());
+//		System.out.println(front.last.value);
+		
+	}
 
-    /**
-     * Removes and returns the last value of the list.
-     */
-    int removeLast() {
-        if(isEmpty()) {
-            Errors.error("removeLast() on empty list!");
-        }
-        
-        int value = last.value;
-        if(first == last) {
-            // List has only one element, so just clear it
-            clear();
-        }
-        else {
-            // List has more than one element
-            IntNode currentNode = first;
-            while(currentNode.next != last)
-                currentNode = currentNode.next;
-            
-            currentNode.next = null;
-            last = currentNode;
-            size--;
-        }
-        return value;
-    }
-    
-    /**
-     * Removes all values from the list, making the list empty.
-     */
-    void clear() {
-        first = last = null;
-        size = 0;
-    }
-    
-    /**
-     * Returns a new int-array with the same contents as the list.
-     */
-    int[] toArray() {
-        int[] array = new int[size];
-        int i = 0;
-        for(IntNode n = first; n != null; n = n.next, i++)
-            array[i] = n.value;
-        return array;
-    }
-    
-    /**
-     * For internal use only.
-     */
-    IntNode getNode(int index) {
-        if(index < 0 || index >= size) {
-            Errors.error("getNode() with invalid index: " + index);
-        }
-        
-        IntNode current = first;
-        for(int i = 0; i < index; i++)
-            current = current.next;
-        return current;
-    }
 }
