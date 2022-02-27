@@ -1,6 +1,6 @@
-
 //https://lightoj.com/problem/critical-links
 //results in run-time-error, dunno why
+
 import java.util.*;
 class Pair implements Comparable<Pair>{
 	int x;
